@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display Music</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap'); /* Importing the Cinzel font */
+        
+        body {
+            font-family: 'Cinzel', serif; /* Applying the Cinzel font */
+            background-color: #FFB6C1; /* Baby pink background */
+            color: #000; /* Black text */
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #FF0000; /* Red navbar */
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px; /* Increased padding for navbar */
+        }
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-left a {
+            color: #FFF; /* White navbar links */
+            text-decoration: none;
+            padding: 14px 20px;
+        }
+        .navbar-left a:hover {
+            background-color: #8B0000; /* Dark red hover color */
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        .search-form {
+            text-align: center; /* Center align the search form */
+            margin-bottom: 20px; /* Add space between search bar and songs */
+        }
+        .search-form input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #000; /* Black border */
+            margin-right: 10px; /* Add some spacing between input and button */
+        }
+        .search-form button {
+            padding: 10px 20px;
+            background-color: #FF0000; /* Red button */
+            color: #FFF; /* White text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-form button:hover {
+            background-color: #8B0000; /* Dark red hover color */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px; /* Add space between heading and search bar */
+        }
+        .song-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .song {
+            margin-bottom: 20px; /* Spacing between melodies */
+        }
+        .card {
+            background-color: #FFF; /* White card background */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Add transition for box-shadow and background-color */
+            display: flex; /* Display card content in a flexbox */
+            align-items: center; /* Center align card content */
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background-color: #F5F5F5; /* Highlighted background color */
+        }
+        .card img {
+            width: 150px; /* Adjusted image size */
+            height: auto;
+            border-radius: 10px;
+            margin-right: 20px; /* Spacing between image and audio */
+        }
+        .card-content {
+            flex-grow: 1; /* Allow card content to grow */
+        }
+        .card-content audio {
+            width: 100%; /* Full width audio */
+        }
+    </style>
+</head>
+<body>    
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="{% url 'music:display' %}">Home</a>
+            <a href="{% url 'music:add_song' %}">Upload your melodies</a>
+            <a href="{% url 'music:logout' %}">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>Enter the Musical Wonderland</h2>
+        
+        <div class="search-form">
+            <form method="GET" action="{% url 'music:display' %}">
+                <input type="text" name="q" placeholder="Search by title...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        
+        <ul class="song-list">
+            {% for song in songs %}
+            <li class="song">
+                <div class="card">
+                    <img src="{{ song.image_file.url }}" alt="{{ song.title }}">
+                    <div class="card-content">
+                        <strong>Melody {{ forloop.counter }}</strong> <!-- Change "song1" to "Melody 1" -->
+                        <audio controls>
+                            <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
